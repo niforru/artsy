@@ -1,0 +1,45 @@
+#!/bin/bash
+
+choice_file="/tmp/remembered_choice.txt"
+current_time=$(date +%s)
+
+if [[ -f "$choice_file" ]]; then
+	choice=$(head -n 1 "$choice_file")
+	timestamp=$(tail -n 1 "$choice_file")
+	time_difference=$((current_time - timestamp))
+		        
+	if ((time_difference < 7200)); then
+		if [[ "$choice" == "y" ]]; then
+			cat ~/SysStuff/artsy/bong.txt
+
+		elif [[ "$choice" == "n" ]]; then
+			lessfetch
+
+		elif [[ "$choice" == "c" ]]; then
+			exit 1
+		fi
+		exit 0
+	fi
+fi
+
+read -p ":" user_input
+
+if [[ "$user_input" == "y" || "$user_input" == "n" || "$user_input" == "c" ]]; then
+	echo "$user_input" > "$choice_file"
+	echo "$current_time" >> "$choice_file"
+
+	if [[ "$user_input" == "y" ]]; then
+		cat ~/SysStuff/artsy/bong.txt
+	
+	elif [[ "user_input" == "n" ]]; then
+		lessfetch
+
+	elif [[ "user_input" == "c" ]]; then
+		exit 1
+	
+fi
+	exit 0
+else
+	echo "Try again"
+	exit 1
+fi
